@@ -58,6 +58,7 @@ void WNewRelease::update() {
     for (auto payT : facade->userPaymentTypes()) {
         ui->PaymentType->addItem(QString::fromStdString(payT));
     }
+    tableBuilder();
 }
 
 void WNewRelease::on_Clean_clicked()

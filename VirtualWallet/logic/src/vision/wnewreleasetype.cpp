@@ -14,8 +14,8 @@ WNewReleaseType::WNewReleaseType(QWidget *parent) :
     titles << "Id" << "Tipos de Lançamentos";
 
     ui->TypeList->setColumnCount(2);
-    ui->TypeList->setColumnWidth(0, 40);
-    ui->TypeList->setColumnWidth(1, 400);
+    ui->TypeList->setColumnWidth(0, 30);
+    ui->TypeList->setColumnWidth(1, 390);
     ui->TypeList->setHorizontalHeaderLabels(titles);
     ui->TypeList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
@@ -72,7 +72,7 @@ void WNewReleaseType::tableBuilder()
 
 void WNewReleaseType::on_TypeList_clicked(const QModelIndex &index)
 {
-    ui->Name->setText(ui->TypeList->item(index.row(), index.column())->text());
+    ui->Name->setText(ui->TypeList->item(index.row(), 1)->text());
 }
 
 void WNewReleaseType::on_Delete_clicked()
@@ -85,7 +85,6 @@ void WNewReleaseType::on_Delete_clicked()
         on_Clean_clicked();
         ui->Msg->setStyleSheet("color: green");
         ui->Msg->setText("Tipo de Lançamento Excluido com Sucesso!");
-        tableBuilder();
         emit build();
     }
 }
