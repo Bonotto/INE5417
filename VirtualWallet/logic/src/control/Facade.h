@@ -56,7 +56,8 @@ public:
     std::string getUserName();
 
 private:
-    int currentUser;
+    list<string> paymentTypes;
+    User * currentUser;
     DataBase * bd;
 };
     

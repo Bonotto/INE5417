@@ -2,7 +2,8 @@
 
 namespace project {
 
-UserBuilder::UserBuilder(string _name, string _code, string _password, string _confirm) :
+UserBuilder::UserBuilder(int _id, string _name, string _code, string _password, string _confirm) :
+    id(_id),
     name(_name),
     code(_code),
     password(_password),
@@ -22,7 +23,7 @@ bool UserBuilder::isValid() {
 User* UserBuilder::build() {
     if (!isValid())
         throw std::out_of_range("Os parâmetros para a criação não são validos!");
-    return new User(name, password, code);
+    return new User(id, name, password, code);
 }
 
 }

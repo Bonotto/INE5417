@@ -30,8 +30,6 @@ public:
     void remove(int id);
 
 private:
-    void putExistUser(Wallet * wallet);
-    void putNewUser(Wallet * wallet);
 
     QSqlDatabase & conn;
 };

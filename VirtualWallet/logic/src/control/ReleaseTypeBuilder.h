@@ -11,14 +11,14 @@ namespace project {
 
 class ReleaseTypeBuilder {
 public:
-    ReleaseTypeBuilder(std::string _name, int _id);
+    ReleaseTypeBuilder(std::string _name, int _id, int _userId);
     ~ReleaseTypeBuilder();
 
     bool isValid();
     ReleaseType * build();
 
 private:
-    int id;
+    int id, userId;
     std::string name;
 
 };

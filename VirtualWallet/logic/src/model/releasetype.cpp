@@ -6,9 +6,10 @@ ReleaseType::ReleaseType()
 {
 
 }
-ReleaseType::ReleaseType(string _name, int _id):
+ReleaseType::ReleaseType(string _name, int _id, int _userId):
     typeName(_name),
-    id(_id)
+    id(_id),
+    userId(_userId)
 {
 
 }
@@ -23,9 +24,20 @@ void ReleaseType::setId(int _id)
     id = _id;
 }
 
+
 int ReleaseType::getId()
 {
     return id;
+}
+
+int ReleaseType::getUserId()
+{
+    return userId;
+}
+
+void ReleaseType::setUserId(int _userId)
+{
+    userId = _userId;
 }
 
 void ReleaseType::setTypeName(string _typeName)

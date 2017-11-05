@@ -10,17 +10,20 @@ namespace project {
 class ReleaseType
 {
 public:
-    explicit ReleaseType(string _name, int _id);
+    explicit ReleaseType(string _name, int _id, int _userId);
     ReleaseType();
     ~ReleaseType();
 
     int getId();
+    int getUserId();
     string getName();
+
     void setId(int _id);
+    void setUserId(int _userId);
     void setTypeName(string _typeName);
 
 private:
-    int id{-1};
+    int id{-1}, userId{-1};
     string typeName;
 };
 

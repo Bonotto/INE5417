@@ -14,40 +14,26 @@ namespace project {
 
 class User {
 public:
-    User(string _name, string _password, string _code);
+    User(int _id, string _name, string _password, string _code);
     ~User();
 
     int getId();
     string getCode();
     string getName();
     string getPassword();
-    list<Account*> getAccounts();
-    list<ReleaseType*> getReleaseTypes();
-    list<string> getPaymentTypes();
-    Account * getAccount(string _accountName);
+
+    void setId(int _id);
 
     bool verifyUser(std::string _name, std::string _password);
+    bool verifyCodePass(std::string _code, std::string _password);
+    bool verifyNameCode(std::string _name, std::string _code);
 
     void changeName(string _newName);
     void changePassword(string _newPassword);
 
-    bool insertAccount(Account * _account);
-    void removeAccount(Account * _account);
-    void removeAccount(std::string _name);
-    void changeAccount(std::string _old, std::string _new);
-    bool accountExist(std::string _name);
-
-    bool insertReleaseType(ReleaseType * _type);
-    void removeReleaseType(ReleaseType * _type);
-    void removeRelease(Release * _release);
-    void removeReleases(string _type);
-
 private:
     int id;
     string name, password, code;
-    list<ReleaseType*> releaseTypes;
-    list<string> paymentTypes;
-    list<Account*> accounts;
 };
 
 }  // namespace project

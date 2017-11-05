@@ -30,8 +30,6 @@ public:
     void remove(int id);
 
 private:
-    void putExistUser(User * user);
-    void putNewUser(User * user);
 
     QSqlDatabase & conn;
 };

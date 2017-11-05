@@ -36,18 +36,18 @@ public:
     ~DataBase();
 
     User * getUser(int _id);
+    User * getUserByName(string _name);
     User * getUserByNameAndPass(string _name, string _password);
     User * getUserByCodeAndPass(string _code, string _password);
     User * getUserByNameAndCode(string _name, string _code);
 
-    bool put(User * _user);
+    void put(User * _user);
 
     list<Wallet*> getWallets(int _userId);
     list<Account*> getAccounts(int _userId);
     list<BankAccount*> getBankAccounts(int _userId);
 
     list<Release*> getReleases(int _userId);
-    list<string> getPaymentTypes(int _userId);
     list<ReleaseType*> getReleaseTypes(int _userId);
 
     Account * getAccount(string _accName, int _userId);
@@ -62,8 +62,9 @@ public:
     bool put(BankAccount * _account, int _userId);
 
     bool put(Release * _release, int _userId);
-
 private:
+    void createTables();
+
     int counterUser{0},
         counterAccounts{0},
         counterReleases{0},
@@ -75,7 +76,7 @@ private:
     WalletMapper * walletMapper;
     BankAccountMapper * bankAccountMapper;
     ReleaseMapper * releaseMapper;
-    ReleaseTypeMapper * releasetTypeMapper;
+    ReleaseTypeMapper * releaseTypeMapper;
 
 };
 
