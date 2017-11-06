@@ -3,7 +3,8 @@
 namespace project {
 
 ReleaseMapper::ReleaseMapper(QSqlDatabase & _conn) :
-    conn(_conn)
+    conn(_conn),
+
 {
 
 }
@@ -15,7 +16,22 @@ ReleaseMapper::~ReleaseMapper()
 
 Release * ReleaseMapper::getById(int id)
 {
-    return nullptr;
+    QSqlQuery query(conn);
+    query.prepare("SELECT * FROM RLS WHERE ID = " + QString::number(id));
+    query.exec();
+
+    if(query.size() == 0)
+        return nullptr;
+
+    double value = query.value(1).toString().toStdString();
+    Account * acc = accountMapper->get= query.value(2).toString().toStdString();
+    string pass = query.value(3).toString().toStdString();
+    string pass = query.value(3).toString().toStdString();
+    string pass = query.value(3).toString().toStdString();
+    string pass = query.value(3).toString().toStdString();
+    string pass = query.value(3).toString().toStdString();
+
+    return new User(id, name, pass, code);
 }
 
 list<Release*> ReleaseMapper::getAllReleases()
@@ -24,16 +40,6 @@ list<Release*> ReleaseMapper::getAllReleases()
 }
 
 void ReleaseMapper::put(Release * release)
-{
-
-}
-
-void ReleaseMapper::putExistUser(Release * release)
-{
-
-}
-
-void ReleaseMapper::putNewUser(Release * release)
 {
 
 }

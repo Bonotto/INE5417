@@ -30,14 +30,6 @@ public:
 
     void setId(int _id);
     
-    void changeValue(double _value);
-    void changeAccount(Account* _account);
-    void changeReleaseType(ReleaseType * _type);
-    void changePaymentType(string _type);
-    void changeDescription(string _description);
-    void changeOperation(string _operation);
-    void changeDate(string _date);
-    
 private:
     int id;
     double value;

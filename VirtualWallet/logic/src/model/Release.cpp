@@ -61,32 +61,4 @@ void Release::setId(int _id)
     id = _id;
 }
 
-void Release::changeValue(double _value) {
-    value = _value;
-}
-
-void Release::changeAccount(Account *_account) {
-    account = _account;
-}
-
-void Release::changeReleaseType(ReleaseType * _type) {
-    releaseType = _type;
-}
-
-void Release::changePaymentType(string _type) {
-    paymentType = _type;
-}
-
-void Release::changeDescription(string _description) {
-    description = _description;
-}
-
-void Release::changeOperation(string _operation) {
-    operation = _operation;
-}
-
-void Release::changeDate(string _date) {
-    date = _date;
-}
-
 }  // namespace project

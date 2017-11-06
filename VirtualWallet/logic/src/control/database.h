@@ -43,6 +43,7 @@ public:
 
     void put(User * _user);
 
+    Account * getAccount(string _accName, int _userId);
     list<Wallet*> getWallets(int _userId);
     list<Account*> getAccounts(int _userId);
     list<BankAccount*> getBankAccounts(int _userId);
@@ -50,18 +51,17 @@ public:
     list<Release*> getReleases(int _userId);
     list<ReleaseType*> getReleaseTypes(int _userId);
 
-    Account * getAccount(string _accName, int _userId);
-
-    bool put(ReleaseType * _type, int _userId);
+    void put(ReleaseType * _type);
     void removeReleaseType(int _typeId, int _userId);
-    void removeReleasesByType(string _type, int _userId);
-    void removeRelease(int _relId, int _userId);
+    void removeReleasesByType(int _typeId, int _userId);
+    void removeRelease(int _relId);
 
-    bool put(Wallet * _account, int _userId);
-    void removeAccount(int _accId, int _userId);
-    bool put(BankAccount * _account, int _userId);
+    void put(Wallet * _account);
+    void removeAccount(int _accId);
+    void put(BankAccount * _account);
 
-    bool put(Release * _release, int _userId);
+    void put(Release * _release);
+
 private:
     void createTables();
 

@@ -23,15 +23,12 @@ public:
     ~ReleaseMapper();
 
     Release * getById(int id);
-    list<Release*> getAllReleases();
+    list<Release*> getAllReleases(int _accId);
 
     void put(Release * release);
     void remove(int id);
 
 private:
-    void putExistUser(Release * release);
-    void putNewUser(Release * release);
-
     QSqlDatabase & conn;
 };
 

@@ -39,7 +39,8 @@ bool Facade::registerUser(std::string _name, std::string _code, std::string _pas
     if (!builder.isValid())
         return false;
 
-    return bd->put(builder.build());
+    bd->put(builder.build());
+    return true;
 }
 
 bool Facade::login(std::string _name, std::string _password)
@@ -115,16 +116,24 @@ list<string> Facade::userPaymentTypes()
 
 bool Facade::registerReleaseType(std::string _name, int _typeId)
 {
-    for (auto & r : bd->getReleaseTypes(currentUser->getId()))
-        if (_name == r->getName())
-            return false;
+    bool exist = false;
+    for (auto & it : bd->getReleaseTypes(currentUser->getId())) {
+        if (it->getName() == _name)
+            exist = true;
+
+        delete it;
+    }
+
+    if (exist)
+        return false;
 
     ReleaseTypeBuilder builder(_name, _typeId, currentUser->getId());
 
     if (!builder.isValid())
         return false;
 
-    return bd->put(builder.build(), currentUser->getId());
+    bd->put(builder.build());
+    return true;
 }
 
 void Facade::deleteReleaseType(int _typeId)
@@ -134,27 +143,42 @@ void Facade::deleteReleaseType(int _typeId)
 
 bool Facade::registerWallet(std::string _name, double _balance, int _accId)
 {
+    Account * account = bd->getAccount(_name, currentUser->getId());
+
+    if (account != nullptr) {
+        delete account;
+        return false;
+    }
+
     WalletBuilder builder(_accId, _name, _balance);
 
     if (!builder.isValid())
         return false;
 
-    return bd->put(builder.build(), currentUser->getId());
+    bd->put(builder.build());
+    return true;
 }
 
 void Facade::deleteAccount(int _accId)
 {
-    bd->removeAccount(_accId, currentUser->getId());
+    bd->removeAccount(_accId);
 }
 
 bool Facade::registerBankAccount(int _accId, std::string _name, double _balance, std::string _accountNumber, std::string _agency, std::string _bank)
 {
+    Account * account = bd->getAccount(_name, currentUser->getId());
+
+    if (account != nullptr) {
+        delete account;
+        return false;
+    }
     BankAccountBuilder builder(_accId, _name, _balance, _accountNumber, _agency, _bank);
 
     if (!builder.isValid())
         return false;
 
-    return bd->put(builder.build(), currentUser->getId());
+    bd->put(builder.build());
+    return true;
 }
 
 bool Facade::registerRelease(int _relId, double _value, std::string _accountName, std::string _releaseT, std::string _paymentT,
@@ -182,12 +206,13 @@ bool Facade::registerRelease(int _relId, double _value, std::string _accountName
     if (!builder.isValid())
         return false;
 
-    return bd->put(builder.build(), currentUser->getId());
+    bd->put(builder.build());
+    return true;
 }
 
 void Facade::deleteRelease(int _id)
 {
-    bd->removeRelease(_id, currentUser->getId());
+    bd->removeRelease(_id);
 }
 
 Report * Facade::createReport(list<int> accountIds, list<int> releaseTypeIds, list<string> paymentTypes,

@@ -13,37 +13,27 @@ WalletMapper::~WalletMapper()
 
 }
 
-Wallet * WalletMapper::getById(int id)
+Wallet * WalletMapper::getById(int _id)
 {
     return nullptr;
 }
 
-Wallet * WalletMapper::getByName(string name)
+Wallet * WalletMapper::getByName(string _name, int _userId)
 {
     return nullptr;
 }
 
-list<Wallet*> WalletMapper::getAllWallets()
+list<Wallet*> WalletMapper::getAllWallets(int _userId)
 {
     return list<Wallet*>();
 }
 
-void WalletMapper::put(Wallet * wallet)
+void WalletMapper::put(Wallet * _wallet)
 {
 
 }
 
-void WalletMapper::putExistUser(Wallet * wallet)
-{
-
-}
-
-void WalletMapper::putNewUser(Wallet * wallet)
-{
-
-}
-
-void WalletMapper::remove(int id)
+void WalletMapper::remove(int _id)
 {
 
 }

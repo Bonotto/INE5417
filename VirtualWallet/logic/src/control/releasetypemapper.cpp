@@ -46,7 +46,7 @@ ReleaseType * ReleaseTypeMapper::getByName(string name)
 list<ReleaseType*> ReleaseTypeMapper::getAllReleasesTypes(int _userId)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM RELEASE_TYPE WHERE USER_ID = " +  + QString::number(_userId));
+    query.prepare("SELECT * FROM RELEASE_TYPE WHERE USER_ID = " + QString::number(_userId));
     query.exec();
 
     list<ReleaseType*> types;
@@ -73,7 +73,7 @@ void ReleaseTypeMapper::put(ReleaseType * releaseType)
         query.prepare("INSERT INTO RELEASE_TYPE (ID, NAME, USER_ID) VALUES(" +
                             QString::number(releaseType->getId()) + ", " +
                             QString::fromStdString(releaseType->getName()) +
-                            QString::fromStdString(releaseType->getUserId()) + ");");
+                            QString::number(releaseType->getUserId()) + ");");
 
         query.exec();
 

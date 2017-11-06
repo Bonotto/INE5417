@@ -22,15 +22,14 @@ public:
     WalletMapper(QSqlDatabase & _conn);
     ~WalletMapper();
 
-    Wallet * getById(int id);
-    Wallet * getByName(string name);
-    list<Wallet*> getAllWallets();
+    Wallet * getById(int _id);
+    Wallet * getByName(string _name, int _userId);
+    list<Wallet*> getAllWallets(int _userId);
 
-    void put(Wallet * wallet);
-    void remove(int id);
+    void put(Wallet * _wallet);
+    void remove(int _id);
 
 private:
-
     QSqlDatabase & conn;
 };
 

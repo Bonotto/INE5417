@@ -13,37 +13,27 @@ BankAccountMapper::~BankAccountMapper()
 
 }
 
-BankAccount * BankAccountMapper::getById(int id)
+BankAccount * BankAccountMapper::getById(int _id)
 {
     return nullptr;
 }
 
-BankAccount * BankAccountMapper::getByName(string name)
+BankAccount * BankAccountMapper::getByName(string name, int _userId)
 {
     return nullptr;
 }
 
-list<BankAccount*> BankAccountMapper::getAllBankAccounts()
+list<BankAccount*> BankAccountMapper::getAllBankAccounts(int _userId)
 {
     return list<BankAccount*>();
 }
 
-void BankAccountMapper::put(BankAccount * bankAccount)
+void BankAccountMapper::put(BankAccount * _bankAccount)
 {
 
 }
 
-void BankAccountMapper::putExistUser(BankAccount * bankAccount)
-{
-
-}
-
-void BankAccountMapper::putNewUser(BankAccount * bankAccount)
-{
-
-}
-
-void BankAccountMapper::remove(int id)
+void BankAccountMapper::remove(int _id)
 {
 
 }

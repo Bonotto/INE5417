@@ -58,7 +58,7 @@ list<User*> UserMapper::getAllUsers()
         string name = query.value(1).toString().toStdString();
         string code = query.value(2).toString().toStdString();
         string pass = query.value(3).toString().toStdString();
-        users.push_front(new User(is, name, pass, code));
+        users.push_front(new User(id, name, pass, code));
     }
 
     return users;
