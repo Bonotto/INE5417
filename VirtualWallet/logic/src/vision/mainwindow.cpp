@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->MenuButton->setIcon(QIcon(":menubutton.png"));
     ui->MenuButton->setIconSize(QSize(20,20));
 
-    if(facade->getCurrentId() == -1)
+    if(!facade->existUser())
         ui->Stack->setCurrentWidget(ui->NewUser);
 
     ui->NewWallet->setFacade(facade);
@@ -51,10 +51,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->NewReleaseType, SIGNAL(build()), this, SLOT(build()));
     connect(ui->NewWallet, SIGNAL(build()), this, SLOT(build()));
 
-    connect(this, SIGNAL(update()), ui->NewRelease, SLOT(update()));
-    connect(this, SIGNAL(update()), ui->NewReleaseType, SLOT(tableBuilder()));
     connect(this, SIGNAL(update()), ui->Home, SLOT(tableBuilder()));
     connect(this, SIGNAL(update()), ui->Report, SLOT(tableBuilder()));
+    connect(this, SIGNAL(update()), ui->NewWallet, SLOT(tableBuilder()));
+    connect(this, SIGNAL(update()), ui->NewBankAccount, SLOT(tableBuilder()));
+    connect(this, SIGNAL(update()), ui->NewReleaseType, SLOT(tableBuilder()));
+    connect(this, SIGNAL(update()), ui->NewRelease, SLOT(update()));
 }
 
 MainWindow::~MainWindow()
@@ -142,7 +144,6 @@ void MainWindow::changeStack(int _stack)
         case 2: ui->Stack->setCurrentWidget(ui->ForgotName); break;
         case 3: ui->Stack->setCurrentWidget(ui->Login); break;
     }
-    build();
 }
 
 void MainWindow::on_MenuHome_clicked()

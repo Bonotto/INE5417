@@ -39,7 +39,7 @@ void Report::searchByReleasesType()
     for (auto & rel : aux) {
         bool removeR = true;
         for (auto & type : releasesTypes)
-            if (rel->getReleaseType() == type)
+            if (rel->getReleaseType()->getName() == type->getName())
                 removeR = false;
         if (removeR)
             releases.remove(rel);

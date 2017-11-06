@@ -42,8 +42,11 @@ public:
     User * getUserByNameAndCode(string _name, string _code);
 
     void put(User * _user);
+    bool existUser();
 
     Account * getAccount(string _accName, int _userId);
+    Release * getRelease(int _relId);
+    ReleaseType * getReleaseType(string _typeName, int _userId);
     list<Wallet*> getWallets(int _userId);
     list<Account*> getAccounts(int _userId);
     list<BankAccount*> getBankAccounts(int _userId);

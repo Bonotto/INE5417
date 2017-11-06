@@ -58,7 +58,6 @@ void WNewWallet::on_Confirm_clicked()
         ui->Msg->setStyleSheet("color: red");
         ui->Msg->setText("Nome Invalido!");
     }
-    tableBuilder();
 }
 
 void WNewWallet::tableBuilder()

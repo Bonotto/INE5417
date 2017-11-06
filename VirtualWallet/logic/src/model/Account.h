@@ -21,6 +21,8 @@ public:
     int getUserId();
     string getName();
     double getBalance();
+
+    void incrementBalance(double _value);
     
 private:
     int id, user_Id;

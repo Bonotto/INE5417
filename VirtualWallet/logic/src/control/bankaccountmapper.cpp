@@ -16,11 +16,12 @@ BankAccountMapper::~BankAccountMapper()
 BankAccount * BankAccountMapper::getById(int _id)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM ACCOUNT WHERE ID = " + QString::number(_id) + " AND TYPE = 1");
-    query.exec();
+    query.exec("SELECT * FROM ACCOUNT WHERE ID = " + QString::number(_id) + " AND TYPE = '1'");
 
     if(query.size() == 0)
         return nullptr;
+
+    query.next();
 
     string name = query.value(1).toString().toStdString();
     double balance = query.value(3).toDouble();
@@ -35,12 +36,13 @@ BankAccount * BankAccountMapper::getById(int _id)
 BankAccount * BankAccountMapper::getByName(string name, int _userId)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM ACCOUNT WHERE NAME = '" +
-                        QString::fromStdString(name) + "' AND USER_ID = " + _userId);
-    query.exec();
+    query.exec("SELECT * FROM ACCOUNT WHERE NAME = '" +
+                        QString::fromStdString(name) + "' AND USER_ID = " + QString::number(_userId));
 
     if(query.size() == 0)
         return nullptr;
+
+    query.next();
 
     int id = query.value(0).toInt();
     double balance = query.value(3).toDouble();
@@ -54,8 +56,7 @@ BankAccount * BankAccountMapper::getByName(string name, int _userId)
 list<BankAccount*> BankAccountMapper::getAllBankAccounts(int _userId)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM ACCOUNT WHERE USER_ID = " + QString::number(_userId) + " AND TYPE = 1");
-    query.exec();
+    query.exec("SELECT * FROM ACCOUNT WHERE USER_ID = " + QString::number(_userId) + " AND TYPE = '1'");
 
     list<BankAccount*> bankAccounts;
 
@@ -78,25 +79,23 @@ void BankAccountMapper::put(BankAccount * _bankAccount)
     BankAccount * bankAccount = getById(_bankAccount->getId());
     QSqlQuery query(conn);
 
-    if (_bankAccount != nullptr)
-        query.prepare("UPDATE ACCOUNT SET NAME = '" + QString::fromStdString(_bankAccount->getName()) +
+    if (bankAccount != nullptr)
+        query.exec("UPDATE ACCOUNT SET NAME = '" + QString::fromStdString(_bankAccount->getName()) +
                             "', BALANCE = " + QString::number(_bankAccount->getBalance()) +
                             ", ACC_NUMBER = '" + QString::fromStdString(_bankAccount->getAccountNumber()) +
                             "', AGENCY = '" + QString::fromStdString(_bankAccount->getAgency()) +
                             "', BANK = '" + QString::fromStdString(_bankAccount->getBank()) +
                             "', USER_ID = " + QString::number(_bankAccount->getUserId()) +
-                            "' WHERE ID = " + QString::number(bankAccount->getId()));
+                            " WHERE ID = " + QString::number(bankAccount->getId()));
     else
-        query.prepare("INSERT INTO ACCOUNT (NAME, TYPE, BALANCE, ACC_NUMBER, AGENCY, BANK, USER_ID) VALUES('" +
-                            QString::fromStdString(_bankAccount->getName()) + "', '" +
-                            QString::fromStdString((_bankAccount->getType()) ? "1" : "0") + "', " +
+        query.exec("INSERT INTO ACCOUNT (NAME, TYPE, BALANCE, ACC_NUMBER, AGENCY, BANK, USER_ID) VALUES('" +
+                            QString::fromStdString(_bankAccount->getName()) + "', " +
+                            QString::fromStdString((_bankAccount->getType()) ? "'1'" : "'0'") + ", " +
                             QString::number(_bankAccount->getBalance()) + ", '" +
                             QString::fromStdString(_bankAccount->getAccountNumber()) + "', '" +
                             QString::fromStdString(_bankAccount->getAgency()) + "', '" +
                             QString::fromStdString(_bankAccount->getBank()) + "', " +
                             QString::number(_bankAccount->getUserId()) + ");");
-
-        query.exec();
 
         delete bankAccount;
 }
@@ -104,8 +103,7 @@ void BankAccountMapper::put(BankAccount * _bankAccount)
 void BankAccountMapper::remove(int _id)
 {
     QSqlQuery query(conn);
-    query.prepare("DELETE * FROM ACCOUNT WHERE ID = " + QString::number(_id));
-    query.exec();
+    query.exec("DELETE FROM ACCOUNT WHERE ID = " + QString::number(_id));
 }
 
 } // namespace

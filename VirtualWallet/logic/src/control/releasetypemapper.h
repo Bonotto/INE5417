@@ -22,12 +22,12 @@ public:
     ReleaseTypeMapper(QSqlDatabase & _conn);
     ~ReleaseTypeMapper();
 
-    ReleaseType * getById(int id);
-    ReleaseType * getByName(string name);
+    ReleaseType * getById(int _id);
+    ReleaseType * getByName(string _typeName, int _userId);
     list<ReleaseType*> getAllReleasesTypes(int _userId);
 
-    void put(ReleaseType * releaseType);
-    void remove(int id);
+    void put(ReleaseType * _releaseType);
+    void remove(int _id);
 
 private:
     QSqlDatabase & conn;

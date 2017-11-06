@@ -150,27 +150,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="Confirm">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">#Confirm
-{
-    background-color: #a3f48a;
-    color: black;
-    font-size: 12px;
-}</string>
-        </property>
-        <property name="text">
-         <string>Confirmar</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="Back">
         <property name="maximumSize">
          <size>
@@ -194,6 +173,27 @@
         </property>
         <property name="text">
          <string>Voltar</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Confirm">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#Confirm
+{
+    background-color: #a3f48a;
+    color: black;
+    font-size: 12px;
+}</string>
+        </property>
+        <property name="text">
+         <string>Confirmar</string>
         </property>
        </widget>
       </item>

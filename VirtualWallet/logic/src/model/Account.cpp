@@ -37,4 +37,9 @@ double Account::getBalance() {
     return balance;
 }
 
+void Account::incrementBalance(double _value)
+{
+    balance += _value;
+}
+
 }  // namespace project

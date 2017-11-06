@@ -21,8 +21,10 @@ Release::Release(int _id, double _value, Account* _account,
     
 }
 
-Release::~Release() {
-
+Release::~Release()
+{
+    delete account;
+    delete releaseType;
 }
 
 int Release::getId() {

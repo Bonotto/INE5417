@@ -13,41 +13,41 @@ ReleaseTypeMapper::~ReleaseTypeMapper()
 
 }
 
-ReleaseType * ReleaseTypeMapper::getById(int id)
+ReleaseType * ReleaseTypeMapper::getById(int _id)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM RELEASE_TYPE WHERE ID = " + QString::number(id));
-    query.exec();
+    query.exec("SELECT * FROM RELEASE_TYPE WHERE ID = " + QString::number(_id));
 
     if(query.size() == 0)
         return nullptr;
+
+    query.next();
 
     string name = query.value(1).toString().toStdString();
     int userId = query.value(2).toInt();
 
-    return new ReleaseType(name, id, userId);
+    return new ReleaseType(name, _id, userId);
 }
 
-ReleaseType * ReleaseTypeMapper::getByName(string name)
+ReleaseType * ReleaseTypeMapper::getByName(string _typeName, int _userId)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM RELEASE_TYPE WHERE NAME = " + QString::fromStdString(name));
-    query.exec();
+    query.exec("SELECT * FROM RELEASE_TYPE WHERE NAME = '" + QString::fromStdString(_typeName) + "' AND USER_ID = " + QString::number(_userId));
 
     if(query.size() == 0)
         return nullptr;
 
-    int id = query.value(0).toInt();
-    int userId = query.value(2).toInt();
+    query.next();
 
-    return new ReleaseType(name, id, userId);
+    int id = query.value(0).toInt();
+
+    return new ReleaseType(_typeName, id, _userId);
 }
 
 list<ReleaseType*> ReleaseTypeMapper::getAllReleasesTypes(int _userId)
 {
     QSqlQuery query(conn);
-    query.prepare("SELECT * FROM RELEASE_TYPE WHERE USER_ID = " + QString::number(_userId));
-    query.exec();
+    query.exec("SELECT * FROM RELEASE_TYPE WHERE USER_ID = " + QString::number(_userId));
 
     list<ReleaseType*> types;
 
@@ -61,29 +61,26 @@ list<ReleaseType*> ReleaseTypeMapper::getAllReleasesTypes(int _userId)
     return types;
 }
 
-void ReleaseTypeMapper::put(ReleaseType * releaseType)
+void ReleaseTypeMapper::put(ReleaseType * _releaseType)
 {
-    ReleaseType * _releaseType = getById(releaseType->getId());
+    ReleaseType * releaseTypeAux = getById(_releaseType->getId());
     QSqlQuery query(conn);
 
-    if (_releaseType != nullptr)
-        query.prepare("UPDATE RELEASE_TYPE SET NAME = " + QString::fromStdString(releaseType->getName()) +
-                            " WHERE ID = " + QString::number(_releaseType->getId()));
+    if (releaseTypeAux != nullptr)
+        query.exec("UPDATE RELEASE_TYPE SET NAME = '" + QString::fromStdString(_releaseType->getName()) +
+                            "' WHERE ID = " + QString::number(releaseTypeAux->getId()));
     else
-        query.prepare("INSERT INTO RELEASE_TYPE (NAME, USER_ID) VALUES(" +
-                            QString::fromStdString(releaseType->getName()) + ", " +
-                            QString::number(releaseType->getUserId()) + ");");
+        query.exec("INSERT INTO RELEASE_TYPE (NAME, USER_ID) VALUES('" +
+                            QString::fromStdString(_releaseType->getName()) + "', " +
+                            QString::number(_releaseType->getUserId()) + ");");
 
-        query.exec();
-
-        delete _releaseType;
+        delete releaseTypeAux;
 }
 
-void ReleaseTypeMapper::remove(int id)
+void ReleaseTypeMapper::remove(int _id)
 {
     QSqlQuery query(conn);
-    query.prepare("DELETE * FROM RELEASE_TYPE WHERE ID = " + QString::number(id));
-    query.exec();
+    query.exec("DELETE FROM RELEASE_TYPE WHERE ID = " + QString::number(_id));
 }
 
 } // namespace

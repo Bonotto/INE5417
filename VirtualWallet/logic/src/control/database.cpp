@@ -14,9 +14,11 @@ DataBase::DataBase()
     conn.setUserName("postgres");
     conn.setPassword("senha");
     conn.setPort(5432);
+    //conn.open();
 
-    if (conn.open())
+    if (conn.open()) {
         createTables();
+    }
 
     userMapper = new UserMapper(conn);
     walletMapper = new WalletMapper(conn);
@@ -33,26 +35,26 @@ DataBase::~DataBase()
 void DataBase::createTables()
 {
     QSqlQuery query(conn);
-    query.prepare("CREATE TABLE IF NOT EXISTS USR ("
+    query.exec("CREATE TABLE IF NOT EXISTS USR ("
                     "ID 	  SERIAL    PRIMARY KEY,"
-                    "NAME 	  CHAR(255) UNIQUE NOT NULL,"
-                    "CODE 	  CHAR(255) NOT NULL,"
-                    "PASSWORD CHAR(255) NOT NULL"
+                    "NAME 	  VARCHAR(255) UNIQUE NOT NULL,"
+                    "CODE 	  VARCHAR(255) NOT NULL,"
+                    "PASSWORD VARCHAR(255) NOT NULL"
                     ");"
                     "CREATE TABLE IF NOT EXISTS ACCOUNT ("
                     "ID 	 	SERIAL 	    PRIMARY KEY,"
-                    "NAME 	 	CHAR(255)   NOT NULL,"
-                    "TYPE 	 	CHAR(1)     NOT NULL,"
+                    "NAME 	 	VARCHAR(255)   NOT NULL,"
+                    "TYPE 	 	VARCHAR(1)     NOT NULL,"
                     "BALANCE 	FLOAT       NOT NULL,"
-                    "ACC_NUMBER CHAR(255),"
-                    "AGENCY     CHAR(255),"
-                    "BANK	 	CHAR(255),"
+                    "ACC_NUMBER VARCHAR(255),"
+                    "AGENCY     VARCHAR(255),"
+                    "BANK	 	VARCHAR(255),"
                     "USER_ID 	INT         NOT NULL,"
                     "FOREIGN KEY (USER_ID)  REFERENCES USR(ID)"
                     "); "
                     "CREATE TABLE IF NOT EXISTS RELEASE_TYPE ("
                     "ID 	 SERIAL        PRIMARY KEY,"
-                    "NAME 	 CHAR(255)     NOT NULL,"
+                    "NAME 	 VARCHAR(255)     NOT NULL,"
                     "USER_ID INT  	   	   NOT NULL,"
                     "FOREIGN KEY (USER_ID) REFERENCES USR(ID)"
                     ");"
@@ -61,24 +63,15 @@ void DataBase::createTables()
                     "VALUE    FLOAT		NOT NULL,"
                     "ACC_ID   INT	 	NOT NULL,"
                     "REL_TYPE INT 		NOT NULL,"
-                    "PAY_TYPE CHAR(255) NOT NULL,"
-                    "OP       CHAR(3)	NOT NULL,"
-                    "DATE	  CHAR(10) 	NOT NULL,"
-                    "DESCP    CHAR(255),"
+                    "PAY_TYPE VARCHAR(255) NOT NULL,"
+                    "OP       VARCHAR(3)	NOT NULL,"
+                    "DATE	  VARCHAR(10) 	NOT NULL,"
+                    "DESCP    VARCHAR(255),"
                     "USER_ID  int       NOT NULL,"
                     "FOREIGN KEY (ACC_ID) 	REFERENCES ACCOUNT(ID),"
                     "FOREIGN KEY (REL_TYPE) REFERENCES RELEASE_TYPE(ID),"
                     "FOREIGN KEY (USER_ID)  REFERENCES USR(ID)"
                     ");");
-    query.exec();
-
-    query.prepare("INSERT INTO USR (NAME, CODE, PASSWORD) VALUES('name', 'code', 'pass')");
-    query.exec();
-    query.prepare("SELECT * FROM USR");
-    query.exec();
-
-    while (query.next())
-        cout << query.value(1).toString().toStdString() << endl << flush;
 }
 
 User * DataBase::getUser(int _id)
@@ -95,8 +88,11 @@ User * DataBase::getUserByNameAndPass(string _name, string _password)
 {
     User * user = userMapper->getByName(_name);
 
-    if (user->verifyUser(_name, _password))
-        return user;
+    if (user != nullptr)
+        if (user->verifyUser(_name, _password))
+            return user;
+        else
+            delete user;
 
     return nullptr;
 }
@@ -129,6 +125,19 @@ void DataBase::put(User * _user)
     userMapper->put(_user);
 }
 
+bool DataBase::existUser()
+{
+    auto list = userMapper->getAllUsers();
+
+    if (!list.size())
+        return false;
+
+    for (auto & usr : list)
+        delete usr;
+
+    return true;
+}
+
 Account * DataBase::getAccount(string _accName, int _userId)
 {
     Account * account = walletMapper->getByName(_accName, _userId);
@@ -137,6 +146,16 @@ Account * DataBase::getAccount(string _accName, int _userId)
         account = bankAccountMapper->getByName(_accName, _userId);
 
     return account;
+}
+
+Release * DataBase::getRelease(int _relId)
+{
+    return releaseMapper->getById(_relId);
+}
+
+ReleaseType * DataBase::getReleaseType(string _typeName, int _userId)
+{
+    return releaseTypeMapper->getByName(_typeName, _userId);
 }
 
 list<Wallet*> DataBase::getWallets(int _userId)

@@ -11,9 +11,6 @@ loginwidget::loginwidget(QWidget *parent) :
     ui->LoginName->setPlaceholderText("Nome");
     ui->LoginPassword->setPlaceholderText("Senha");
     ui->LoginPassword->setEchoMode(QLineEdit::Password);
-
-    ui->LoginName->setText("Nome");
-    ui->LoginPassword->setText("Senha");
 }
 
 loginwidget::~loginwidget()

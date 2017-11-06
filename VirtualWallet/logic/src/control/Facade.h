@@ -23,7 +23,7 @@ public:
     Facade();
     ~Facade();
 
-    int getCurrentId();
+    bool existUser();
 
     bool registerUser(std::string _name,std::string _code, std::string _password, std::string _confirm);
     bool login(std::string _name, std::string _password);
