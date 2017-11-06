@@ -10,9 +10,7 @@ User::User(int _id, string _name, string _password, string _code) :
     password(_password),
     code(_code)
 {
-   /*
-
-    releaseTypes.push_front(new ReleaseType("Água", 1));
+   /*releaseTypes.push_front(new ReleaseType("Água", 1));
     releaseTypes.push_front(new ReleaseType("Energia", 2));
     releaseTypes.push_front(new ReleaseType("Internet", 3));
     releaseTypes.push_front(new ReleaseType("Transporte", 4));

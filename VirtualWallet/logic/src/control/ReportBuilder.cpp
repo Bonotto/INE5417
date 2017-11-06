@@ -3,7 +3,7 @@
 namespace project {
 
 ReportBuilder::ReportBuilder(list<Account*> &_accounts, list<ReleaseType*> &_releasesTypes, list<string> &_paymentTypes,
-              string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out) :
+              string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out, list<Release*> _releases) :
     accounts(_accounts),
     releasesTypes(_releasesTypes),
     paymentTypes(_paymentTypes),
@@ -12,7 +12,8 @@ ReportBuilder::ReportBuilder(list<Account*> &_accounts, list<ReleaseType*> &_rel
     lowerValue(_lowerValue),
     upperValue(_upperValue),
     in(_in),
-    out(_out)
+    out(_out),
+    releases(_releases)
 {
 
 }
@@ -32,7 +33,7 @@ Report * ReportBuilder::build()
 {
     if (!isValid())
         throw std::out_of_range("Impossivel construir o relatorio!");
-    return new Report(accounts, releasesTypes, paymentTypes, begin, end, lowerValue, upperValue, in, out);
+    return new Report(accounts, releasesTypes, paymentTypes, begin, end, lowerValue, upperValue, in, out, releases);
 }
 
 }

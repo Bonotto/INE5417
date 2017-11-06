@@ -3,14 +3,14 @@
 
 namespace project {
 
-BankAccount::BankAccount(int _id, string _name, double _balance) :
-    Account::Account(_id, _name, _balance, true)
+BankAccount::BankAccount(int _id, string _name, double _balance, int _userId) :
+    Account::Account(_id, _name, _balance, true, _userId)
 {
     
 }
 
-BankAccount::BankAccount(int _id, string _name, double _balance, string _number, string _agency, string _bank) :
-    Account::Account(_id, _name, _balance, true)
+BankAccount::BankAccount(int _id, string _name, double _balance, string _number, string _agency, string _bank, int _userId) :
+    Account::Account(_id, _name, _balance, true, _userId)
 {
     agency = _agency;
     accountNumber = _number;

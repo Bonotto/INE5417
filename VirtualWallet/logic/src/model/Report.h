@@ -19,7 +19,7 @@ namespace project {
 class Report {
 public:
     Report(list<Account*> &_accounts, list<ReleaseType*> &_releasesTypes, list<string> &_paymentTypes,
-           string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out);
+           string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out, list<Release*> & _releases);
     ~Report();
     
     list<Release*> getReleases();

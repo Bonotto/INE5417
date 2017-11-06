@@ -5,7 +5,7 @@
 namespace project {
 
 Report::Report(list<Account*> &_accounts, list<ReleaseType*> &_releasesTypes, list<string> &_paymentTypes,
-               string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out) :
+               string _begin, string _end, double _lowerValue, double _upperValue, bool _in, bool _out, list<Release*> &_releases) :
     accounts(_accounts),
     releasesTypes(_releasesTypes),
     begin(_begin),
@@ -14,12 +14,9 @@ Report::Report(list<Account*> &_accounts, list<ReleaseType*> &_releasesTypes, li
     lowerValue(_lowerValue),
     upperValue(_upperValue),
     in(_in),
-    out(_out)
+    out(_out),
+    releases(_releases)
 {
-    for (auto & acc : accounts)
-        for (auto & rel : acc->getReleases())
-            releases.push_back(rel);
-
     searchByReleasesType();
     searchByPaymentType();
     searchByDate();

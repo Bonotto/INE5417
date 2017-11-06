@@ -16,14 +16,14 @@ class ReleaseBuilder
 {
 public:
     ReleaseBuilder(int _id, double _value, Account * _account, ReleaseType * _releaseType,
-                   string _paymentType, string _description, string operation, string _date);
+                   string _paymentType, string _description, string operation, string _date, int _userId);
     ~ReleaseBuilder();
 
     bool isValid();
     Release * build();
 
 private:
-    int id;
+    int id, userId;
     double value;
     Account* account;
     ReleaseType * releaseType;

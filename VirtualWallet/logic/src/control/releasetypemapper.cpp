@@ -70,9 +70,8 @@ void ReleaseTypeMapper::put(ReleaseType * releaseType)
         query.prepare("UPDATE RELEASE_TYPE SET NAME = " + QString::fromStdString(releaseType->getName()) +
                             " WHERE ID = " + QString::number(_releaseType->getId()));
     else
-        query.prepare("INSERT INTO RELEASE_TYPE (ID, NAME, USER_ID) VALUES(" +
-                            QString::number(releaseType->getId()) + ", " +
-                            QString::fromStdString(releaseType->getName()) +
+        query.prepare("INSERT INTO RELEASE_TYPE (NAME, USER_ID) VALUES(" +
+                            QString::fromStdString(releaseType->getName()) + ", " +
                             QString::number(releaseType->getUserId()) + ");");
 
         query.exec();

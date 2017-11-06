@@ -9,10 +9,10 @@ namespace project {
 DataBase::DataBase()
 {
     conn = QSqlDatabase::addDatabase("QPSQL");
+    conn.setDatabaseName("engenharia");
+    conn.setHostName("localhost");
     conn.setUserName("postgres");
     conn.setPassword("senha");
-    conn.setHostName("localhost");
-    conn.setDatabaseName("engenharia");
     conn.setPort(5432);
 
     if (conn.open())
@@ -21,8 +21,8 @@ DataBase::DataBase()
     userMapper = new UserMapper(conn);
     walletMapper = new WalletMapper(conn);
     bankAccountMapper = new BankAccountMapper(conn);
-    releaseMapper = new ReleaseMapper(conn);
     releaseTypeMapper = new ReleaseTypeMapper(conn);
+    releaseMapper = new ReleaseMapper(conn, walletMapper, bankAccountMapper, releaseTypeMapper);
 }
 
 DataBase::~DataBase()
@@ -34,41 +34,51 @@ void DataBase::createTables()
 {
     QSqlQuery query(conn);
     query.prepare("CREATE TABLE IF NOT EXISTS USR ("
-                    "ID 	  SERIAL PRIMARY KEY,"
+                    "ID 	  SERIAL    PRIMARY KEY,"
                     "NAME 	  CHAR(255) UNIQUE NOT NULL,"
                     "CODE 	  CHAR(255) NOT NULL,"
-                    "PASSWORD  CHAR(255) NOT NULL"
+                    "PASSWORD CHAR(255) NOT NULL"
                     ");"
                     "CREATE TABLE IF NOT EXISTS ACCOUNT ("
-                    "ID 	 	SERIAL 	     PRIMARY KEY,"
-                    "NAME 	 	CHAR(255)    NOT NULL,"
-                    "TIPO 	 	CHARACTER(1) NOT NULL,"
-                    "BALANCE 	FLOAT        NOT NULL,"
-                    "ACCNUMBER 	CHAR(255),"
-                    "AGENCY 		CHAR(255),"
+                    "ID 	 	SERIAL 	    PRIMARY KEY,"
+                    "NAME 	 	CHAR(255)   NOT NULL,"
+                    "TYPE 	 	CHAR(1)     NOT NULL,"
+                    "BALANCE 	FLOAT       NOT NULL,"
+                    "ACC_NUMBER CHAR(255),"
+                    "AGENCY     CHAR(255),"
                     "BANK	 	CHAR(255),"
-                    "USER_ID 	INT	     NOT NULL,"
-                    "FOREIGN KEY (USER_ID) 	     REFERENCES USR(ID)"
+                    "USER_ID 	INT         NOT NULL,"
+                    "FOREIGN KEY (USER_ID)  REFERENCES USR(ID)"
                     "); "
                     "CREATE TABLE IF NOT EXISTS RELEASE_TYPE ("
-                    "ID 	 SERIAL    	PRIMARY KEY,"
-                    "NAME 	 CHAR(255) 	NOT NULL,"
-                    "USER_ID  INT  	   	NOT NULL,"
-                    "FOREIGN KEY (USER_ID)   REFERENCES USR(ID)"
+                    "ID 	 SERIAL        PRIMARY KEY,"
+                    "NAME 	 CHAR(255)     NOT NULL,"
+                    "USER_ID INT  	   	   NOT NULL,"
+                    "FOREIGN KEY (USER_ID) REFERENCES USR(ID)"
                     ");"
                     "CREATE TABLE  IF NOT EXISTS RLS ("
-                    "ID 	 SERIAL		PRIMARY KEY,"
+                    "ID 	  SERIAL	PRIMARY KEY,"
                     "VALUE    FLOAT		NOT NULL,"
                     "ACC_ID   INT	 	NOT NULL,"
                     "REL_TYPE INT 		NOT NULL,"
-                    "PAY_TYPE CHAR(255) 	NOT NULL,"
-                    "OP	 CHAR(3)	NOT NULL,"
-                    "DATE	 CHAR(10) 	NOT NULL,"
+                    "PAY_TYPE CHAR(255) NOT NULL,"
+                    "OP       CHAR(3)	NOT NULL,"
+                    "DATE	  CHAR(10) 	NOT NULL,"
                     "DESCP    CHAR(255),"
+                    "USER_ID  int       NOT NULL,"
                     "FOREIGN KEY (ACC_ID) 	REFERENCES ACCOUNT(ID),"
-                    "FOREIGN KEY (REL_TYPE)  REFERENCES RELEASE_TYPE(ID)"
+                    "FOREIGN KEY (REL_TYPE) REFERENCES RELEASE_TYPE(ID),"
+                    "FOREIGN KEY (USER_ID)  REFERENCES USR(ID)"
                     ");");
     query.exec();
+
+    query.prepare("INSERT INTO USR (NAME, CODE, PASSWORD) VALUES('name', 'code', 'pass')");
+    query.exec();
+    query.prepare("SELECT * FROM USR");
+    query.exec();
+
+    while (query.next())
+        cout << query.value(1).toString().toStdString() << endl << flush;
 }
 
 User * DataBase::getUser(int _id)
@@ -187,6 +197,16 @@ void DataBase::removeReleasesByType(int _typeId, int _userId)
     }
 }
 
+void DataBase::removeReleasesByAccount(int _accId, int _userId)
+{
+    for (auto & rel: releaseMapper->getAllReleases(_userId)) {
+        if (rel->getAccount()->getId() == _accId)
+            releaseMapper->remove(rel->getId());
+
+        delete rel;
+    }
+}
+
 void DataBase::removeRelease(int _relId)
 {
     releaseMapper->remove(_relId);
@@ -197,8 +217,9 @@ void DataBase::put(Wallet * _account)
     walletMapper->put(_account);
 }
 
-void DataBase::removeAccount(int _accId)
+void DataBase::removeAccount(int _accId, int _userId)
 {
+    removeReleasesByAccount(_accId, _userId);
     walletMapper->remove(_accId);
 }
 

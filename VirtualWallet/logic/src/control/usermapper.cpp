@@ -75,10 +75,9 @@ void UserMapper::put(User * user)
                             ", PASSWORD = " + QString::fromStdString(user->getPassword()) +
                             " WHERE ID = " + QString::number(_user->getId()));
     else
-        query.prepare("INSERT INTO USR (ID, NAME, CODE, PASSWORD) VALUES(" +
-                            QString::number(user->getId()) + ", " +
-                            QString::fromStdString(user->getName()) +
-                            QString::fromStdString(user->getCode()) +
+        query.prepare("INSERT INTO USR (NAME, CODE, PASSWORD) VALUES(" +
+                            QString::fromStdString(user->getName()) + ", " +
+                            QString::fromStdString(user->getCode()) + ", " +
                             QString::fromStdString(user->getPassword()) + ");");
 
         query.exec();

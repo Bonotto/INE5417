@@ -7,7 +7,7 @@ namespace project {
 
 Release::Release(int _id, double _value, Account* _account,
                  ReleaseType * _releaseType, string _paymentType,
-                 string _description, string _operation, string _date) :
+                 string _description, string _operation, string _date, int _userId) :
     id(_id),
     value(_value),
     account(_account),
@@ -15,7 +15,8 @@ Release::Release(int _id, double _value, Account* _account,
     paymentType(_paymentType),
     description(_description),
     operation(_operation),
-    date(_date)
+    date(_date),
+    user_id(_userId)
 {
     
 }
@@ -24,8 +25,12 @@ Release::~Release() {
 
 }
 
-size_t Release::getId() {
+int Release::getId() {
     return id;
+}
+
+int Release::getUserId() {
+    return user_id;
 }
 
 double Release::getValue() {
@@ -54,11 +59,6 @@ string Release::getOperation() {
 
 string Release::getDate() {
     return date;
-}
-
-void Release::setId(int _id)
-{
-    id = _id;
 }
 
 }  // namespace project

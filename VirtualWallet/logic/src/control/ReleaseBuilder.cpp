@@ -3,7 +3,7 @@
 namespace project {
 
 ReleaseBuilder::ReleaseBuilder(int _id, double _value, Account * _account, ReleaseType * _releaseType,
-                               string _paymentType, string _description, string _operation, string _date) :
+                               string _paymentType, string _description, string _operation, string _date, int _userId) :
     id(_id),
     value(_value),
     account(_account),
@@ -11,7 +11,8 @@ ReleaseBuilder::ReleaseBuilder(int _id, double _value, Account * _account, Relea
     paymentType(_paymentType),
     description(_description),
     operation(_operation),
-    date(_date)
+    date(_date),
+    userId(_userId)
 {
 
 }
@@ -33,7 +34,7 @@ Release * ReleaseBuilder::build()
     if (!isValid())
         throw std::out_of_range("Os parâmetros para a criação não são validos!");
 
-    return new Release(id, value, account, releaseType, paymentType, description, operation, date);
+    return new Release(id, value, account, releaseType, paymentType, description, operation, date, userId);
 }
 
 }

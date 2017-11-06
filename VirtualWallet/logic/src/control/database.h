@@ -54,10 +54,11 @@ public:
     void put(ReleaseType * _type);
     void removeReleaseType(int _typeId, int _userId);
     void removeReleasesByType(int _typeId, int _userId);
+    void removeReleasesByAccount(int _accId, int _userId);
     void removeRelease(int _relId);
 
     void put(Wallet * _account);
-    void removeAccount(int _accId);
+    void removeAccount(int _accId, int _userId);
     void put(BankAccount * _account);
 
     void put(Release * _release);

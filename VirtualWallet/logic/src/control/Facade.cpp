@@ -23,6 +23,9 @@ Facade::~Facade()
 
 int Facade::getCurrentId()
 {
+    if (currentUser == nullptr)
+        return -1;
+
     return currentUser->getId();
 }
 
@@ -150,7 +153,7 @@ bool Facade::registerWallet(std::string _name, double _balance, int _accId)
         return false;
     }
 
-    WalletBuilder builder(_accId, _name, _balance);
+    WalletBuilder builder(_accId, _name, _balance, currentUser->getId());
 
     if (!builder.isValid())
         return false;
@@ -161,7 +164,7 @@ bool Facade::registerWallet(std::string _name, double _balance, int _accId)
 
 void Facade::deleteAccount(int _accId)
 {
-    bd->removeAccount(_accId);
+    bd->removeAccount(_accId, currentUser->getId());
 }
 
 bool Facade::registerBankAccount(int _accId, std::string _name, double _balance, std::string _accountNumber, std::string _agency, std::string _bank)
@@ -172,7 +175,7 @@ bool Facade::registerBankAccount(int _accId, std::string _name, double _balance,
         delete account;
         return false;
     }
-    BankAccountBuilder builder(_accId, _name, _balance, _accountNumber, _agency, _bank);
+    BankAccountBuilder builder(_accId, _name, _balance, _accountNumber, _agency, _bank, currentUser->getId());
 
     if (!builder.isValid())
         return false;
@@ -201,7 +204,7 @@ bool Facade::registerRelease(int _relId, double _value, std::string _accountName
     if (_op == "out")
         _value = - _value;
 
-    ReleaseBuilder builder(_relId, _value, account, releaseT, _paymentT, _description, _op, _date);
+    ReleaseBuilder builder(_relId, _value, account, releaseT, _paymentT, _description, _op, _date, currentUser->getId());
 
     if (!builder.isValid())
         return false;
@@ -234,7 +237,7 @@ Report * Facade::createReport(list<int> accountIds, list<int> releaseTypeIds, li
                 break;
             }
 
-    ReportBuilder builder(accounts, releaseTypes, paymentTypes, begin, end, lower, upper, in, out);
+    ReportBuilder builder(accounts, releaseTypes, paymentTypes, begin, end, lower, upper, in, out, bd->getReleases(currentUser->getId()));
 
     if (!builder.isValid())
         return nullptr;
