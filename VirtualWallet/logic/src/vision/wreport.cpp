@@ -130,8 +130,8 @@ void WReport::on_AccTable_clicked(const QModelIndex &index)
 
 void WReport::on_TypesTable_clicked(const QModelIndex &index)
 {
-    auto item0 = ui->AccTable->item(index.row(), 0);
-    auto item1 = ui->AccTable->item(index.row(), 1);
+    auto item0 = ui->TypesTable->item(index.row(), 0);
+    auto item1 = ui->TypesTable->item(index.row(), 1);
     QColor c = item0->background().color();
 
     if (c == QColor("#a3f48a")) {
